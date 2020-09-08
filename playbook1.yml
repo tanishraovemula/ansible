@@ -1,0 +1,15 @@
+---
+- name: implementing playscope variabales
+  hosts: all
+  vars:
+          - a: git
+          - b: present
+          - c: yes       
+  tasks:
+   - name: playscope variables
+     apt:
+      name: "{{a}}"
+      state: "{{b}}"
+      update_cache: "{{c}}"
+
+

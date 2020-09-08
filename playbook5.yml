@@ -1,0 +1,33 @@
+---
+- name: implementing ci-cd
+  hosts: jenkin
+  tasks:
+   - name: install necessary softwares
+     apt:
+      name: "{{item.a}}"
+      state: "{{item.b}}"
+      update_cache: "{{item.c}}"
+     with_items:
+      - {a: openjdk-8-jdk,b: present,c: yes}
+      - {a: maven, b: present, c: yes}
+      - {a: git, b: present, c: yes}
+   - name: download jenkins.war
+     get_url:
+       url: https://get.jenkins.io/war-stable/2.235.5/jenkins.war
+       dest: /home/ubuntu
+- name: setup tomcat on qa and prod server
+  hosts: servers
+  tasks:
+   - name: install tomcat and tomcat-admin
+     apt:
+       name: "{{item.a}}"
+       state: "{{item.b}}"
+       update_cache: "{{item.c}}"
+     with_items:
+             - {a: tomcat8,b: present,c: yes}
+             - {a: tomcat8-admin,b: present,c: yes}
+   - name: copy tomcat-userers.xml
+     copy:
+      src: /home/ubuntu/tomcat-users.xml
+      dest: /etc/tomcat8      
+
