@@ -1,0 +1,27 @@
+---
+- name: implementing lamp architecture
+  hosts: all
+  tasks:
+    - name: create a mysql container
+      docker_container:
+              image: mysql:5
+              name: db
+              env:
+               MYSQL_ROOT_PASSWORD: intelliqit
+    - name: create a httpd container linkded with mysql
+      docker_container:
+       image: httpd
+       name: appserver1
+       ports:
+        - 6060:80
+       links:
+        - db:mysql
+    - name: create a php container linked with mysql and hhtpd
+      docker_container:
+        image: php:7.2-apache
+        name: myphp
+        links:
+          - db:mysql
+        links:    
+          - appserver1:httpd         
+

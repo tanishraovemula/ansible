@@ -1,0 +1,19 @@
+---
+- name: implementing handlers
+  hosts: all
+  tasks:
+   - name: install apache2
+     apt:
+       name: apache2
+       state: present
+       update_cache: yes
+   - name: change index.html file
+     copy:
+       content: "its work"    
+       dest: /var/www/html/index.html
+     notify: restart the apache2  
+  handlers:
+   - name: restart the server
+     service:
+             name: apache2
+             state: restarted      
